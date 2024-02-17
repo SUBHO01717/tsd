@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                
+                <a href="{% url "service_man_dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                <hr>
+                <a href=""><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                <hr>
+                <a href="{% url 'service_man_quotation_list'%}"  style="display: block; margin-bottom: 25px;">
+                    <i class="fas fa-list me-3"></i>All Quotations
+                </a>
+                
+                <a href="{% url 'service_man_order_list'  %}" style="display: block; margin-bottom: 25px;">
+                    <i class="fas fa-list me-3"></i>All Orders
+                </a>
+            
+                <hr>
+                <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+            </div>
+            <div class="col-lg-10 col-12 py-5">
+                <div class="row">
+
+                    <div class="col-12">
+                        <div class="card mt-5 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">Quotation Number - <a href="{% url 'quotation_deatils' pk=quotation.pk %}">{{quotation.quotation_number}}</a></h5>
+                                <hr>
+                                <form method="POST" id="quotationPricingForm">
+                                    {% csrf_token %}
+                                
+                                    <table class="table" id="quotationPricingTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Item Name</th>
+                                                <th>Item Price &#163;(Only Number)</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="quotationPricingRow">
+                                                <td>
+                                                    <input type="text" name="item_name" class="form-control" required>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                      
+                                                      <input type="text" name="item_price" class="form-control item-price" required>
+                                                    </div>
+                                                    
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary addRowBtn">Add Row</button>
+                                                    <button type="button" class="btn btn-danger removeRowBtn">Remove</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Total :</th>
+                                                
+                                                <td id="totalAmount"> <span> &#163; </span> 0.00</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                
+                                    <button type="submit" class="btn btn-primary">Submit All</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Add new row to the table
+        $(document).on("click", ".addRowBtn", function() {
+            var newRow = $(".quotationPricingRow:first").clone();
+            newRow.find('input').val(''); // Clear input values in the new row
+            $("#quotationPricingTable tbody").append(newRow);
+            updateTotalAmount();
+        });
+
+        // Remove row from the table
+        $(document).on("click", ".removeRowBtn", function() {
+            if ($("#quotationPricingTable tbody tr").length > 1) {
+                $(this).closest('tr').remove();
+                updateTotalAmount();
+            } else {
+                alert("Cannot remove the last row.");
+            }
+        });
+
+        // Update total amount when item_price changes
+        $(document).on("input", ".item-price", function() {
+            updateTotalAmount();
+        });
+
+        // Function to update the total amount
+        function updateTotalAmount() {
+            var totalAmount = 0;
+            $(".item-price").each(function() {
+                var price = parseFloat($(this).val()) || 0;
+                totalAmount += price;
+            });
+            $("#totalAmount").text(totalAmount.toFixed(2));
+        }
+
+        // Submit all form data
+        $("#quotationPricingForm").on("submit", function(event) {
+            event.preventDefault();
+
+            // Create an array to store form data
+            var formDataArray = [];
+
+            // Loop through each row and collect form data
+            $(".quotationPricingRow").each(function() {
+                var rowData = {};
+                $(this).find('input').each(function() {
+                    rowData[this.name] = $(this).val();
+                });
+                formDataArray.push(rowData);
+            });
+
+            // Convert the array to JSON
+            var formDataJson = JSON.stringify(formDataArray);
+
+            // Add a hidden input field to the form to include the JSON data
+            $("<input>").attr({
+                type: "hidden",
+                name: "form_data",
+                value: formDataJson
+            }).appendTo("#quotationPricingForm");
+
+            // Submit the form
+            this.submit();
+        });
+    });
+</script>
+
+{% endblock content %}

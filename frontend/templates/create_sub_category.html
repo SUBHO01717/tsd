@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* CSS for styling category links */
+    .categories-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px; /* Adjust the gap as needed */
+        margin-top: 20px; /* Adjust margin as needed */
+    }
+    .category-link {
+        color: #3366cc; /* Change color as needed */
+        text-decoration: none;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .category-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                
+                <a href="{% url "dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                <hr>
+                <a href=""><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                <hr>
+                <a href="{% url 'quotation_list'%}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Quotations
+                </a>
+                
+                <a href="{% url 'order_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Orders
+                </a>
+                
+                <a href="{% url 'customer_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Customer
+                </a>
+                
+                <a href="{% url 'service_man_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Service Man
+                </a>
+                <hr>
+                <h5 class="text-white mb-4">BACKEND</h5><hr>
+                <a href="{% url 'create_category' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Create Category
+                </a>
+                <a href="{% url 'create_sub_category' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Create Sub-Category
+                </a>
+
+                <a href="{% url 'all_job_applications' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Job Applications
+                </a>
+              
+                <hr>
+                <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+            </div>
+            <div class="col-lg-10 col-12 py-5">
+                <div class="row">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} text-center">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    <div class="col-12">
+                        <div class="card mt-5 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">Create Sub-Category</h5>
+                                <hr>
+                                <div class="col-6">
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {% bootstrap_form form %}
+                                        <button type="submit" class="btn btn-primary">Create Sub-Category</button>
+                                    </form>
+                                </div>
+                                <div class="mt-5">
+                                    <h2>Existing Sub Categories:</h2>
+                                    <hr>
+                                    <div class="categories-container">
+                                            {% for subcat in subcategory_all %}
+                                            <a href="{% url 'update_sub_category' subcat.pk  %}" class="category-link"><strong>{{subcat.name}} <span class="text-muted"><i>{{subcat.category.name}}</i></span></strong></a>
+                                            {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                <div style="display: flex; justify-content: center;">
+                  {% if request.user.userprofile.profile_image %}
+                  <img src="{{ request.user.userprofile.profile_image.url }}" alt="" style="border-radius: 50%; width: 150px; height: 150px;">
+                  {% else %}
+                      <!-- Default image or alternative content -->
+                  {% endif %}
+              
+                </div>
+                  <a href="{% url "service_man_dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                  <hr>
+                  <a href="{% url 'service_man_profile_update'%}"><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                  <hr>
+                  <a href="{% url 'service_man_quotation_list'%}" style="display: block; margin-bottom: 25px;">
+                      <i class="fas fa-list me-3"></i>All Assigned Quotations 
+                  </a>
+                  
+                  <a href="{% url 'service_man_order_list'  %}" style="display: block; margin-bottom: 25px;">
+                      <i class="fas fa-list me-3"></i>All Assigned Orders 
+                  </a>
+                  <hr>
+                  <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+              </div>
+            
+            <!-- Main content -->
+            <div class="col-lg-10 col-12">
+                <div class="card mt-5 mb-3 shadow">
+                    <div class="card-body">
+                        <div class ="text-center p-3">
+                            <a href="{% url 'print-pdf' quotation.pk %}" class="btn btn-primary " target="_blank">Download PDF</a>
+                        </div>
+                        <h5 class="card-title">Price Quotaion for Your Job. Request Number - {{quotation.quotation_number}}</h5>
+                        <hr>
+                        
+                        {% if quotation_pricing_items %}
+        
+                        <div class="container  py-5 text-dark" >
+                        <div class="row p-5" style="background-color: #EEF5FF; color: #2D3250;">
+                            <div class="col-6">
+                                <h3>TSD TRADERS</h3>
+                                <p>Unit -605, 252-262 Romford Road, <br> Forest Gate, London, E7 9HZ, <br> United Kingdom</p>
+                                <span>Call @ 07927147901</span> <br>
+                                <span>Info@tsdtraders.com</span>
+                            </div>
+                            <div class="col-6 text-end">
+                                <h3>Price Quotation</h3> <br>
+                                <span  class='pb-3'>Issue Date : {{ quotation_pricing_items.0.date|date:"Y-M-d" }} </span> <br>
+                                <span>Quotation # : <strong>{{ quotation.quotation_number}}</strong></span><br>
+                                <span class="text-danger"><i> <strong>Valid for 30 days </strong></i></span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-5">
+                            <table class="table table-hover text-dark">
+                            <thead>
+                                <tr>
+                                <th scope="col">SL #</th>
+                                <th scope="col">Items</th>
+                                <th scope="col" class="text-end">Price</th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody c>
+                                {% for item in quotation_pricing_items %}
+                                <tr>
+                                    <th scope="row">{{forloop.counter}}</th>
+                                    <td>{{ item.item_name }}</td>
+                                    <td class="text-end">&#163; {{ item.item_price }}</td>
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                <th></th>
+                                <th class="text-end">TOTAL ITEMS: {{ quotation_pricing_items|length }}</th>
+                                <th id="totalAmount" class="text-end"> TOTAL AMOUNT -  <span>&#163; </span> {{total_amount |floatformat:2}}</th>
+                                </tr>
+                                <tr>
+                                <th></th>
+                                <th class="text-end">AMOUNT TO PAY TO START </th>
+                                <th id="totalAmount" class="text-end">  <span>&#163; {{pay_to_wrok}} </span> </th>
+                                </tr>
+                            
+                            </tfoot>
+                            </table>
+                        </div>
+                        <div class="px-3">
+                            <div class="row ">
+                                <div class="col-sm-6">
+                                <p><strong>Terms & Conditions</strong></p>
+                                <ul>
+                                    <li>Customer will be billed 50% to place the order.</li>
+                                    <li>Rest of 50% has to pay after completion of the task.</li>
+                                    <li>Gurantee of works is 15 days for any malfunction. </li>
+                                    <li>This quotation is <span class="text-danger">valid for 30 days </span> from the date of issuance. </li>
+                                    <li>Please mention Quotation Number while placing order after payment </li>
+                    
+                                </ul>
+                                <br><br>
+                                
+                                </div>
+                                <div class="col-sm-6 pt-3 px-5 text-end flex" style="border-radius: 15px; background-color:#DCF2F1;">
+                                <p><strong>MAKE PAYMENT</strong></p>
+                                <hr>
+                                <span>LLOYDS BANK</span><br>
+                                <span>Account Name: TSD Traders</span><br>
+                                <span>Account #: 82211168</span><br>
+                                <span>SORT CODE: 30-99-50</span>  
+                                </div>
+                            
+                                <h3 class="pt-2 text-center">Thanks for choosing us</h3>
+                                <p class="text-center"> <strong>Please use Quotation Number while placing order</strong></p>
+                                <div class="line"></div> <!-- Line after table -->
+                                <div class="text-center">
+                                <p>If you have any inquiries about the quotation, please contact us</p>
+                                <span>Call @ 07927147901</span> <br>
+                                <span>Info@tsdtraders.com</span>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        {% else %}
+                        <h5 class="text-danger">This quotation request has not been assessed yet. Please allow us a little more time.</h5>
+                        <h5 class="text-success">Feel free to call us @ 07927147901</h5>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock content %}

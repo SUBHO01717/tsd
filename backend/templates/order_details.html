@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                
+                <a href="{% url "dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                <hr>
+                <a href=""><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                <hr>
+                <a href="{% url 'quotation_list'%}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Quotations
+                </a>
+                
+                <a href="{% url 'order_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Orders
+                </a>
+                
+                <a href="{% url 'customer_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Customer
+                </a>
+                
+                <a href="{% url 'service_man_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Service Man
+                </a>
+                <hr>
+                <h5 class="text-white mb-4">BACKEND</h5><hr>
+                <a href="{% url 'create_category' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Create Category
+                </a>
+                <a href="" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Create Sub-Category
+                </a>
+                <a href="{% url 'all_job_applications' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Job Applications
+                </a>
+              
+                <hr>
+                <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+            </div>
+            
+            <!-- Main content -->
+            <div class="col-lg-10 col-12">
+                <div class="card mt-5 mb-3 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Detail of Quotation # - {{order.order_number}} & Check Quotation Deatils <a href="{% url 'quotation_deatils' pk=order.quotation.pk %}">{{order.quotation.quotation_number}}</a></h5>
+                        <hr>
+                        <table style="width:50%; color:black;" class="table table-responsive">
+                            
+                            <tr>
+                              <th class="py-2">Order Date</th>
+                              <td class="py-2">{{order.date}}</td>
+                            </tr>
+                            <tr>
+                              <th class="py-2">Quotation Number </th>
+                              <td class="py-2"><a href="{% url 'quotation_deatils' pk=order.quotation.pk %}">{{order.quotation.quotation_number}}</a></td>
+                            </tr>
+                            <tr>
+                              <th class="py-2">Customer Name</th>
+                              <td class="py-2">{{order.quotation.full_name}}</td>
+                            </tr>
+                            <tr>
+                              <th class="py-2">Customer Email</th>
+                              <td class="py-2">{{order.quotation.email}}</td>
+                            </tr>
+                            <tr>
+                              <th class="py-2">Customer Phone</th>
+                              <td class="py-2">{{order.quotation.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Postal Code</th>
+                                <td class="py-2">{{order.quotation.postal_code}}</td>
+                              </tr>
+                            <tr>
+                              <th class="py-2">Quotation Category</th>
+                              <td class="py-2">{{order.quotation.category}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Quotation Sub Category</th>
+                                <td class="py-2">{{order.quotation.subCategory}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Want to Start </th>
+                                <td class="py-2">{{order.quotation.job_start}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Prepartion </th>
+                                <td class="py-2">{{order.quotation.stage}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Property Ownership </th>
+                                <td class="py-2">{{order.quotation.property_ownership}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Order Status </th>
+                                <td class="py-2">{{order.status}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Assign To </th>
+                                <td class="py-2">{{order.assigned_to}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Job Deatils </th>
+                                <td class="py-2">{{order.quotation.job_details}}</td>
+                            </tr>
+                            
+                            <tr>
+                                    <th class="py-2">Order Amount  </th>
+                                    <td class="py-2">&#163; {{order.order_amount |floatformat:"2" }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th class="py-2">Amount Paid </th>
+                                <td class="py-2">&#163; {{order.paid_amount |floatformat:"2" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Amount Due </th>
+                                <td class="py-2">&#163; {{ due_amount | floatformat:"2" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Payment Deatils</th>
+                                <td class="py-2">{{order.payment_details }}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Proof of Payement</th>
+                                <td class="py-2">
+                                    {% if order.proof_of_payment %}
+                                    <a href="{{ order.proof_of_payment.url }}" download class="btn btn-primary">Download</a>
+                                    {% else %}
+                                    <p>No attachment available</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock content %}

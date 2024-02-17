@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Style for gallery */
+    .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+        gap: 10px;
+    }
+    .gallery img {
+        max-width: 200px;
+        height: auto;
+        border: 1px solid #ccc;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+    .gallery img:hover {
+        transform: scale(1.20);
+    }
+</style>
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                <div style="display: flex; justify-content: center;">
+                  {% if request.user.userprofile.profile_image %}
+                  <img src="{{ request.user.userprofile.profile_image.url }}" alt="" style="border-radius: 50%; width: 150px; height: 150px;">
+                  {% else %}
+                      <!-- Default image or alternative content -->
+                  {% endif %}
+              
+                </div>
+                  <a href="{% url "service_man_dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                  <hr>
+                  <a href="{% url 'service_man_profile_update'%}"><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                  <hr>
+                  <a href="{% url 'service_man_quotation_list'%}" style="display: block; margin-bottom: 25px;">
+                      <i class="fas fa-list me-3"></i>All Assigned Quotations 
+                  </a>
+                  
+                  <a href="{% url 'service_man_order_list'  %}" style="display: block; margin-bottom: 25px;">
+                      <i class="fas fa-list me-3"></i>All Assigned Orders 
+                  </a>
+                  <hr>
+                  <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+              </div>
+            <!-- Main content -->
+            <div class="col-lg-10 col-12">
+                <div class="card mt-5 mb-3 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Detail of Quotation # - {{quotation.quotation_number}}</h5>
+                        <hr>
+                        <table style="width:50%; color:black;" class="table table-responsive">
+                            
+                            <tr>
+                              <th class="py-2">Request Date</th>
+                              <td class="py-2">{{quotation.date}}</td>
+                            </tr>
+                            <tr>
+                              <th class="py-2">Quotation Number </th>
+                              <td class="py-2">{{quotation.quotation_number}}</td>
+                            </tr>
+                            <tr>
+                              <th class="py-2">Customer Name</th>
+                              <td class="py-2">{{quotation.full_name}}</td>
+                            </tr>
+                            <tr>
+                              <th class="py-2">Customer Email</th>
+                              <td class="py-2">{{quotation.email}}</td>
+                            </tr>
+                            <tr>
+                              <th class="py-2">Customer Phone</th>
+                              <td class="py-2">{{quotation.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Postal Code</th>
+                                <td class="py-2">{{quotation.postal_code}}</td>
+                              </tr>
+                            <tr>
+                              <th class="py-2">Quotation Category</th>
+                              <td class="py-2">{{quotation.category}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Quotation Sub Category</th>
+                                <td class="py-2">{{quotation.subCategory}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Want to Start </th>
+                                <td class="py-2">{{quotation.job_start}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Prepartion </th>
+                                <td class="py-2">{{quotation.stage}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Property Ownership </th>
+                                <td class="py-2">{{quotation.property_ownership}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Status </th>
+                                <td class="py-2">{{quotation.status}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Assign To </th>
+                                <td class="py-2">{{quotation.assigned_to}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Job Deatils </th>
+                                <td class="py-2">{{quotation.job_details}}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2">Work Space Images </th>
+                            </tr>
+                       
+                          </table>
+                          <div class="container">
+                            <div class="gallery">
+                                {% for image in quotation.quotation_images.all %}
+                                <img src="{{ image.images.url }}" alt="" style="width: 200px; height: auto;" class="img-fluid">
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    const images = document.querySelectorAll('.gallery img');
+    images.forEach(image => {
+        image.addEventListener('click', () => {
+            // Replace the image source with its larger version
+            // You can implement a lightbox plugin for a better experience
+            window.open(image.src, '_blank');
+        });
+    });
+</script>
+
+
+
+{% endblock content %}

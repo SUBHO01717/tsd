@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block content %}
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5">
+        <div class="container py-5">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">Free Quote</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">Free Quote</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Quote Start -->
+    <div class="container-fluid bg-light overflow-hidden px-lg-0" style="margin: 6rem 0;">
+        <div class="container quote px-lg-0">
+            <div class="row g-0 mx-lg-0">
+                <div class="col-lg-6 ps-lg-0 wow fadeIn" data-wow-delay="0.1s" style="min-height: 400px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute img-fluid w-100 h-100" src="{% static "img/contact.jpg" %}"  alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 quote-text py-5 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="p-lg-5 pe-lg-0">
+                        <h6 class="text-primary">Free Quote</h6>
+                        <h1 class="mb-4">Get A Free Quote</h1>
+                        <p class="mb-4 pb-2"> Ready to tackle any challenge, we're here to fix your thing! Get a free quote ASAP and let's get started on making it right.</p>
+                       {% comment %}<form method="post" id="quotationForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                             <div class="row g-3">
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" class="form-control border-0" placeholder="Your Name" name="full_name"style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="email" class="form-control border-0" placeholder="Your Email"name="email" style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" class="form-control border-0" placeholder="Your Phone Number" name="phone"style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" class="form-control border-0" placeholder="Your Postal Code" name="postal_code"style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <select class="form-select border-0" style="height: 55px;" name="category" id="category">
+                                        <option value="" selected>Select Service Category</option>
+                                        {% for category in categories %}
+                                            <option value="{{ category.name }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <select class="form-select border-0" style="height: 55px;" name="subCategory" id="subCategory">
+                                        <option value="" selected>Select Service Sub-Category</option>
+                                        {% for subcategory in subcategories %}
+                                            <option value="{{ subcategory.name }}" data-category="{{ subcategory.category.name }}">{{ subcategory.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <select class="form-select border-0" style="height: 55px;" name="job_start">
+                                        <option selected>When you like to start?</option>
+                                        <option value="Immediate">Immediate</option>
+                                        <option value="Within a week">Within a week</option>
+                                        <option value="Within two week">Within two week</option>
+                                        <option value="Within a month">Within two month</option>
+                                        <option value="Within two month">Within two month</option>
+                                        <option value="Flexible Date">Flexible Date</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <select class="form-select border-0" style="height: 55px;" name="stage">
+                                        <option selected>What Stage you are at?</option>
+                                        <option value="I am ready to hire ">I am ready to hire </option>
+                                        <option value="I am palning & budgeting ">I am palning & budgeting </option>
+                                        <option value="I need a qoute for Insurance">I need a qoute for Insurance</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <select class="form-select border-0" style="height: 55px;" name="budget">
+                                        <option selected>What is your Budget?</option>
+                                        <option value="1K">1K</option>
+                                        <option value="2K">2K</option>
+                                        <option value="4K">4K</option>
+                                        <option value="8K">8K</option>
+                                        <option value="16K">16K</option>
+                                        <option value="30K+">30K+</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <select class="form-select border-0" style="height: 55px;" name="ownership">
+                                        <option selected>Are you authorize to make Changes?</option>
+                                        <option value="I own and live at this property">I own and live at this property</option>
+                                        <option value="I am a Landlord">I am a Landlord</option>
+                                        <option value="I am a tenent but authorize to change">I am a tenent but authorize to change</option>
+                                        <option value="I am planing to buy">I am planing to buy</option>
+                                    </select>
+                                </div>                            
+                                
+                               
+                                <div class="col-12">
+                                    <textarea class="form-control border-0" placeholder="Special Note" style="height: 200px;" name="job_details"></textarea>
+                                </div>
+
+                                <div class="col-md-6">
+                                                              
+                                        {{ formset.management_form }}
+
+                                        {% for form in formset %}
+                                        {% bootstrap_form form %}
+                                        {% endfor %}
+                            
+                                 
+                                </div>
+                                
+                                <div class="col-12">
+                                    <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">Submit</button>
+                                </div>
+                            </div> {% endcomment %}
+
+
+
+                            <div class="row">
+                                <div class="col-md-12 col-6">
+                                   <form method="post" enctype="multipart/form-data" id="quotation-form">
+                                        {% csrf_token %}
+
+                                       <div class="row">
+                                            <div class="col-12 col-sm-12 mb-2">
+                                                <label for="id_full_name" class="form-label">Full Name</label>
+                                                {{ quotation_form.full_name }}
+                                            </div>
+                                           
+                                       </div>
+                                       <div class="row">
+                                            <div class="col-12 col-sm-6 mb-2">
+                                                <label for="id_full_name" class="form-label">Concact Number</label>
+                                                {{ quotation_form.phone }}
+                                            </div>
+                                            <div class="col-12 col-sm-6 mb-2">
+                                                <label for="id_full_name" class="form-label">Postal Code</label>
+                                                {{ quotation_form.postal_code }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 mb-2">
+                                                <label for="id_category">Select Service Category</label>
+                                                <select name="category" id="id_category" class="form-control border-0" style="height: 55px; background-color: #FFFFFF;">
+                                                    <option value="">---------</option>
+                                                    {% for category in categories %}
+                                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+    
+                                            <div class="col-12 col-sm-6 mb-2">
+                                                <label for="id_subCategory">SubCategory</label>
+                                                <select name="subCategory" id="id_subCategory" class="form-control border-0" style="height: 55px; background-color: #FFFFFF;" >
+                                                    <option value="">---------</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 mb-2">
+                                                <label for="id_full_name" class="form-label">When you like to start?</label>
+                                                {{ quotation_form.job_start }}
+                                            </div>
+                                            <div class="col-12 col-sm-6 mb-2">
+                                                <label for="id_full_name" class="form-label">What Stage you are at?</label>
+                                                {{ quotation_form.stage }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 mb-2">
+                                                <label for="id_full_name" class="form-label">What is your Budget?</label>
+                                                {{ quotation_form.budget }}
+                                            </div>
+                                            <div class="col-12 col-sm-6 mb-2">
+                                                <label for="id_full_name" class="form-label">Are you authorize to make Changes?</label>
+                                                {{ quotation_form.ownership }}
+                                            </div>
+                                            <div class="col-12 mb-2">
+                                                <label for="id_full_name" class="form-label">Please write your job details</label>
+                                                {{ quotation_form.job_details }}
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="formFile" class="form-label">Upload Your Work Place Images</label> <br>
+                                            {{ formset.management_form }}
+                                            {% for form in formset %}
+                                            {% bootstrap_form form %}
+                                            {% endfor %}
+                                        </div>
+
+
+                                  
+                                  
+                                        <!-- Include other fields here -->
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Quote End -->
+
+<!--JavaScript for Chain dropdown--> 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var categorySelect = document.getElementById("id_category");
+        var subcategorySelect = document.getElementById("id_subCategory");
+
+        // Function to reset the subcategory dropdown to its initial state
+        function resetSubcategoryDropdown() {
+            subcategorySelect.innerHTML = '<option value="">---------</option>';
+        }
+
+        categorySelect.addEventListener("change", function() {
+            var categoryId = this.value;
+
+            // Reset the subcategory dropdown
+            resetSubcategoryDropdown();
+
+            // If no category selected, exit
+            if (!categoryId) {
+                return;
+            }
+
+            // Fetch subcategories based on the selected category
+            fetch(`/get-subcategories/${categoryId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(subcategory => {
+                        var option = document.createElement('option');
+                        option.text = subcategory.name;
+                        option.value = subcategory.id;
+                        subcategorySelect.add(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching subcategories:', error));
+        });
+
+        // Reset the subcategory dropdown initially
+        resetSubcategoryDropdown();
+    });
+</script>
+
+
+{% endblock content %}
+

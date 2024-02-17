@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section style="background-color: #EEF5FF;">
+  <div class="container-fluid">
+      <div class="row">
+          <!-- Sidebar -->
+          <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+            <div style="display: flex; justify-content: center;">
+              {% if request.user.userprofile.profile_image %}
+              <img src="{{ request.user.userprofile.profile_image.url }}" alt="" style="border-radius: 50%; width: 150px; height: 150px;">
+              {% else %}
+                  <!-- Default image or alternative content -->
+              {% endif %}
+          
+            </div>
+              <a href="{% url "service_man_dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+              <hr>
+              <a href="{% url 'service_man_profile_update'%}"><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+              <hr>
+              <a href="{% url 'service_man_quotation_list'%}" style="display: block; margin-bottom: 25px;">
+                  <i class="fas fa-list me-3"></i>All Assigned Quotations 
+              </a>
+              
+              <a href="{% url 'service_man_order_list'  %}" style="display: block; margin-bottom: 25px;">
+                  <i class="fas fa-list me-3"></i>All Assigned Orders 
+              </a>
+              <hr>
+              <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+          </div>
+          
+          <!-- Main content -->
+          <div class="col-lg-10 col-12">
+              <div class="card mt-5 mb-3 shadow">
+                  <div class="card-body">
+                      <h5 class="card-title"> Quotaion Number - {{quotation.quotation_number}} you are Editing</h5>
+                      <hr>
+                      {% if formset %}
+                      <form method="post">
+                          {% csrf_token %}
+                          {{ formset.management_form }}
+                          <div class="table-responsive">
+                          <table class="table table-hover">
+                              <thead>
+                                  <th></th>
+                                  <th>Items</th>
+                                  <th>Price</th>
+                                  <th>Delete</th>
+                              </thead>
+                              <tbody>
+                              {% for form in formset.forms %}
+                                  <tr>
+                                  <!-- Render your form fields here -->
+                                  <td>{{ form.id }}</td>
+                                  <td>{{ form.item_name }}</td>
+                                  <td>{{ form.item_price }}</td>
+                                  <td>{{ form.delete }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                          </div>
+          
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </form>
+                      {{ formset.media }}
+                      {% else %}
+                      <p>This quotation has not been assessed yet. Please check job details for assessment.</p>
+                      {% endif %}
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+{% endblock content %}

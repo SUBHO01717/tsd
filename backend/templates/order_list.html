@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row ">
+          <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                
+            <a href="{% url "dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+            <hr>
+            <a href=""><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+            <hr>
+            <a href="{% url 'quotation_list'%}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>All Quotations
+            </a>
+            
+            <a href="{% url 'order_list'  %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>All Orders
+            </a>
+            
+            <a href="{% url 'customer_list'  %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>All Customer
+            </a>
+            
+            <a href="{% url 'service_man_list'  %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>All Service Man
+            </a>
+            <hr>
+            <h5 class="text-white mb-4">BACKEND</h5><hr>
+            <a href="{% url 'create_category' %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>Create Category
+            </a>
+            <a href="" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>Create Sub-Category
+            </a>
+            <a href="{% url 'all_job_applications' %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>Job Applications
+            </a>
+          
+            <hr>
+            <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+        </div>
+            <div class="col-lg-10 col-12 py-5">
+                <div class="row">
+                 
+                    <div class="col-3">
+                        <div class="card shadow">
+                          <div class="card-body">
+                              <h5 class="card-title">Total Work in Progress</h5>
+                              <h5 class="card-title pb-3">{{ orders.work_in_progress }}</h5>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title">Total Assign </h5>
+                              <h5 class="card-title pb-3">{{ orders.assign }}</h5>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title">Total Not Assign</h5>
+                              <h5 class="card-title pb-3">{{ orders.not_assign }}</h5>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title">Total Completed</h5>
+                              <h5 class="card-title pb-3">{{ orders.completed }}</h5>
+                            </div>
+                          </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card mt-5 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">All Orders</h5>
+                                <hr>
+                                <table class="table table-hover text-dark">
+                                  <thead>
+                                      <tr>
+                                        <th scope="col">Serial</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Quotation #</th>
+                                        <th scope="col">Order #</th>
+                                        <th scope="col">Order Amount</th>
+                                        <th scope="col">Paid Amount</th>
+                                        <th scope="col">Assign To </th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for order in order_list  %}
+                                      <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{order.date}}</td>
+                                        <td>{{order.quotation.quotation_number}}</td>
+                                        <td>{{order.order_number}}</td>
+                                        <td>&#163; {{order.order_amount}}</td>
+                                        <td>&#163; {{order.paid_amount}}</td>
+                                        <td><a href="{% url 'service_man_details' pk=order.assigned_to.id %}">{{order.assigned_to}}</a></td>
+                                        <td>{{order.status}}</td>
+                                        <td>
+                                              <a href="{% url 'order_deatils' order.pk %}" class="btn btn-primary btn-sm">Details</a> |
+                                              <a href="{% url 'order_assign' order.pk %}" class="btn btn-warning btn-sm">Assign</a> 
+                                        </td>
+                                      </tr>
+                                      {% endfor %}
+                               
+                                    </tbody>
+                                   
+                              </table>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

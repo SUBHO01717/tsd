@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5">
+        <div class="container py-5">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">{{job.post_name}} </h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url "services" %}">Services</a></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Projects Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h6 class="text-primary"> {{job.post_name}} </h6>
+                <h1 class="mb-4">Be a part of TSD Traders</h1>
+                <div class="caution-note just">
+         
+                    <p><i>Before submitting your job application, please ensure that all information provided is accurate and truthful. Any false or misleading information may result in disqualification from consideration for employment. Additionally, it is important to disclose any relevant details such as criminal history in notes section of the form, if applicable. Failure to do so may also result in disqualification or termination of employment.</i></p>
+                
+                    <p>By submitting this job application, you acknowledge that you have read and understood the caution note above, and that all information provided is accurate to the best of your knowledge.</p>
+                </div>
+               
+            </div>
+         
+            <h1 class="mb-4">Application Form</h1>
+            <div class="row g-4 portfolio-container wow fadeInUp" data-wow-delay="0.5s">
+                               
+                <div class="col-lg-12 col-md-12 portfolio-item first">
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% bootstrap_form form%}
+                
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                </div>
+                
+             
+
+            </div>
+        </div>
+    </div>
+    <!-- Projects End -->
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                
+                <a href="{% url "dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                <hr>
+                <a href=""><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                <hr>
+                <a href="{% url 'quotation_list'%}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Quotations
+                </a>
+                
+                <a href="{% url 'order_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Orders
+                </a>
+                
+                <a href="{% url 'customer_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Customer
+                </a>
+                
+                <a href="{% url 'service_man_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Service Man
+                </a>
+                <hr>
+                <h5 class="text-white mb-4">BACKEND</h5><hr>
+                <a href="{% url 'create_category' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Create Category
+                </a>
+                <a href="" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Create Sub-Category
+                </a>
+                <a href="{% url 'all_job_applications' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Job Applications
+                </a>
+              
+                <hr>
+                <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+            </div>
+            <div class="col-lg-10 col-12 py-5">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-3" >
+                            <div class="row g-0">
+                              <div class="col-md-4">
+                                <img src="{{customer.userprofile.profile_image.url}}" class="img-fluid rounded-start" alt="...">
+                              </div>
+                              <div class="col-md-8">
+                                <div class="card-body">
+                                    <table class="text-dark table-resposive">
+                                        <tr>
+                                            <th>Customer Name : </th>
+                                            <td>{{customer.first_name}} {{customer.last_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Customer Email : </th>
+                                            <td>{{customer.email}} </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Customer Phone : </th>
+                                            <td>{{customer.userprofile.phone}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Customer Address : </th>
+                                            <td>{{customer.userprofile.address}}, {{customer.userprofile.city}},{{customer.userprofile.postal_code}} </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

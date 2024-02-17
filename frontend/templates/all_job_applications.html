@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* CSS for styling category links */
+    .categories-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px; /* Adjust the gap as needed */
+        margin-top: 20px; /* Adjust margin as needed */
+    }
+    .category-link {
+        color: #3366cc; /* Change color as needed */
+        text-decoration: none;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .category-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                
+                <a href="{% url "dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                <hr>
+                <a href=""><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                <hr>
+                <a href="{% url 'quotation_list'%}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Quotations
+                </a>
+                
+                <a href="{% url 'order_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Orders
+                </a>
+                
+                <a href="{% url 'customer_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Customer
+                </a>
+                
+                <a href="{% url 'service_man_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Service Man
+                </a>
+                <hr>
+                <h5 class="text-white mb-4">BACKEND</h5><hr>
+                <a href="{% url 'create_category' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Create Category
+                </a>
+                <a href="{% url 'create_sub_category' %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Create Sub-Category
+                </a>
+              
+                <a href="" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>Job Applications
+                </a>
+              
+                <hr>
+                <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+            </div>
+            <div class="col-lg-10 col-12 py-5">
+                <div class="row">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} text-center">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    <div class="col-12">
+                        <div class="card mt-5 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">All Job Applications</h5>
+                                <hr>
+                                <table class="table">
+                                    <thead>
+                                      <tr class="text-dark">
+                                        <th scope="col">#</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">CV</th>
+                                        <th scope="col">Notes</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for app in applications  %}
+                                      <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{app.first_name}}</td>
+                                        <td>{{app.last_name}}</td>
+                                        <td>{{app.email}}</td>
+                                        <td>{{app.phone}}</td>
+                                        <td>    
+                                            {% if app.cv %}
+                                            <a href="{{ app.cv.url }}" class="btn btn-primary">Download CV</a>
+                                            {% else %}
+                                                <!-- Optionally, you can display a message or leave this section empty if no CV exists -->
+                                                <span>No CV available</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{app.notes}}</td>
+                                      
+                                      </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

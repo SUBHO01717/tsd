@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                <div style="display: flex; justify-content: center;">
+                    {% if request.user.userprofile.profile_image %}
+                    <img src="{{ request.user.userprofile.profile_image.url }}" alt="" style="border-radius: 50%; width: 150px; height: 150px;">
+                    {% else %}
+                        <!-- Default image or alternative content -->
+                    
+                    {% endif %}
+                
+                </div>
+                <a href="{% url "customer_dashboard" %}" ><h5 class="text-white  text-center mb-4">Dashboard</h5></a>
+                <hr>
+                <a href="{% url "customer_profile_update" %}"><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                <hr>
+               
+                <a href="{% url 'quotation_create'  %}" style="display: block; margin-bottom: 15px;">
+                  <i class="fas fa-list me-3"></i>Request for Quotation
+                </a>
+                <a href="{% url 'customer_quotation_list'  %}" style="display: block; margin-bottom: 15px;">
+                  <i class="fas fa-list me-3"></i>All Quotations
+                </a>
+                
+                <a href="{% url 'customer_order_list'  %}" style="display: block; margin-bottom: 15px;">
+                    <i class="fas fa-list me-3"></i>All Orders
+                </a>
+                <hr>
+                <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+            </div>
+            
+            <!-- Main content -->
+            <div class="col-lg-10 col-12">
+                <div class="card mt-5 mb-3 shadow">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} text-center">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    <div class="card-body">
+                        <h5 class="card-title">You are creating against Quotaion Number - {{quotation.quotation_number}}</h5>
+                        <hr>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <table class="table text-dark">
+                                <tbody>
+                                    <tr>
+                                        <th>Quotaion Amount (&#163;)</th>
+                                        <th> {{form.order_amount}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment Amount (&#163;)</th>
+                                        <th>{{form.paid_amount}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Payement Details</th>
+                                        <th>{{form.payment_details}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Proof Of Payment</th>
+                                        <th>{{form.proof_of_payment}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="submit" class="btn btn-primary">Place Order</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row ">
+
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+              <div style="display: flex; justify-content: center;">
+                {% if request.user.userprofile.profile_image %}
+                <img src="{{ request.user.userprofile.profile_image.url }}" alt="" style="border-radius: 50%; width: 150px; height: 150px;">
+                {% else %}
+                    <!-- Default image or alternative content -->
+                {% endif %}
+            
+              </div>
+                <a href="{% url "service_man_dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                <hr>
+                <a href="{% url 'service_man_profile_update'%}"><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                <hr>
+                <a href="{% url 'service_man_quotation_list'%}" style="display: block; margin-bottom: 25px;">
+                    <i class="fas fa-list me-3"></i>All Assigned Quotations 
+                </a>
+                
+                <a href="{% url 'service_man_order_list'  %}" style="display: block; margin-bottom: 25px;">
+                    <i class="fas fa-list me-3"></i>All Assigned Orders 
+                </a>
+                <hr>
+                <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+            </div>
+            <div class="col-lg-10 col-12 py-5">
+                <div class="row">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} text-center">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title"><a href="{% url 'service_man_quotation_list'%}">Total Quotation Assigned</a></h5> <hr>
+                              <h5 class="card-title pb-3">{{all_quotation_count}} </h5>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title"><a href="{% url 'service_man_order_list'  %}">Total Order Assigned</a></h5><hr>
+                              <h5 class="card-title pb-3">{{all_order_count}}</h5>
+                            </div>
+                          </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card mt-5 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">5 Latest Quotation </h5>
+                               
+                                <hr>
+                                <table class="table table-hover text-dark">
+                                    <thead>
+                                        <tr>
+                                          <th scope="col">Serial</th>
+                                          <th scope="col">Date</th>
+                                          <th scope="col">Quotation #</th>
+                                          <th scope="col">Customer Name</th>
+                                          <th scope="col">Email</th>
+                                          <th scope="col">Phone</th>
+                                          <th scope="col">Postal Code</th>
+                                          <th scope="col">Category</th>
+                                          <th scope="col">Status</th>
+                                          <th scope="col">Actions</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for q in quotation  %}
+                                        <tr>
+                                          <th scope="row">{{forloop.counter}}</th>
+                                          <td>{{q.date}}</td>
+                                          <td>{{q.quotation_number}}</td>
+                                          <td>{{q.user.first_name}}</td>
+                                          
+                                         
+                                          <td>{{q.email}}</td>
+                                          <td>{{q.phone}}</td>
+                                          <td>{{q.postal_code}}</td>
+                                          <td>{{q.category}}</td>
+                                          <td>{{q.status}}</td>
+                                          <td>
+                                                <a href="{% url 'service_man_quotation_detail' q.pk %}" class="btn btn-primary btn-sm">Details</a> |
+                                                <a href="{% url 'quotation_assign' q.pk %}" class="btn btn-primary btn-sm">Update Status </a> |
+                                                <a href="{% url 'quotation_assessment' q.pk %}" class="btn btn-warning btn-sm">CostAssessment</a>|
+                                                {% if q.quotationpricing_set.exists %}
+                                                    <a href="{% url 'quotation-edit' q.pk %}" class="btn btn-warning btn-sm">QuotaionEdit</a>|
+                                                    <a href="{% url 'view-quotation-pricing' q.pk %}" class="btn btn-warning btn-sm">ViewQuotaion</a>|
+                                                {% endif %}
+                                             
+                                          </td>
+                                        </tr>
+                                        {% endfor %}
+                                 
+                                      </tbody>
+                                     
+                                </table>
+                                <a href="{% url 'service_man_quotation_list' %}">All Quotation</a>
+                            </div>
+                        </div>
+                        <div class="card mt-5 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">5 Latest Orders</h5>
+                                <hr>
+                                <table class="table table-hover text-dark">
+                                    <thead>
+                                        <tr>
+                                          <th scope="col">Serial</th>
+                                          <th scope="col">Date</th>
+                                          <th scope="col">Quotation #</th>
+                                          <th scope="col">Order #</th>
+                                          <th scope="col">Order Amount</th>
+                                          <th scope="col">Paid Amount</th>
+                                          <th scope="col">Assign To </th>
+                                          <th scope="col">Status</th>
+                                          <th scope="col">Actions</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for order in orders  %}
+                                        <tr>
+                                          <th scope="row">{{forloop.counter}}</th>
+                                          <td>{{order.date}}</td>
+                                          <td>{{order.quotation.quotation_number}}</td>
+                                          <td>{{order.order_number}}</td>
+                                          <td>&#163; {{order.order_amount}}</td>
+                                          <td>&#163; {{order.paid_amount}}</td>
+                                          <td>{{order.assigned_to}}</td>
+                                          <td>{{order.status}}</td>
+                                          <td>
+                                                <a href="{% url 'service_man_order_detail' order.pk %}" class="btn btn-primary btn-sm">Details</a> 
+                                          </td>
+                                        </tr>
+                                        {% endfor %}
+                                 
+                                      </tbody>
+                                     
+                                </table>
+                                <a href="{% url 'service_man_order_list' %}">All Orders</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

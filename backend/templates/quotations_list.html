@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row ">
+          <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                
+            <a href="{% url "dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+            <hr>
+            <a href=""><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+            <hr>
+            <a href="{% url 'quotation_list'%}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>All Quotations
+            </a>
+            
+            <a href="{% url 'order_list'  %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>All Orders
+            </a>
+            
+            <a href="{% url 'customer_list'  %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>All Customer
+            </a>
+            
+            <a href="{% url 'service_man_list'  %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>All Service Man
+            </a>
+            <hr>
+            <h5 class="text-white mb-4">BACKEND</h5><hr>
+            <a href="{% url 'create_category' %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>Create Category
+            </a>
+            <a href="" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>Create Sub-Category
+            </a>
+            <a href="{% url 'all_job_applications' %}" style="display: block; margin-bottom: 15px;">
+                <i class="fas fa-list me-3"></i>Job Applications
+            </a>
+          
+            <hr>
+            <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+        </div>
+            <div class="col-lg-10 col-12 py-5">
+                <div class="row">
+                 
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title">Total Pending</h5>
+                              <h5 class="card-title pb-3">{{ quotations.total_pending }}</h5>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title">Total Replied </h5>
+                              <h5 class="card-title pb-3">{{ quotations.total_replied }}</h5>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title">Total Win</h5>
+                              <h5 class="card-title pb-3">{{ quotations.total_win }}</h5>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card shadow">
+                            <div class="card-body">
+                              <h5 class="card-title">Total Lost</h5>
+                              <h5 class="card-title pb-3">{{ quotations.total_lost }}</h5>
+                            </div>
+                          </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card mt-5 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">All Quotations</h5>
+                                <hr>
+                                <table class="table table-hover text-dark">
+                                    <thead>
+                                        <tr>
+                                          <th scope="col">Serial</th>
+                                          <th scope="col">Date</th>
+                                          <th scope="col">Quotation #</th>
+                                          <th scope="col">Email</th>
+                                          <th scope="col">Phone</th>
+                                          <th scope="col">Postal Code</th>
+                                          <th scope="col">Category</th>
+                                          <th scope="col">Status</th>
+                                          <th scope="col">Actions</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for q in quotations_list  %}
+                                        <tr>
+                                          <th scope="row">{{forloop.counter}}</th>
+                                          <td>{{q.date}}</td>
+                                          <td>{{q.quotation_number}}</td>
+                                         
+                                          <td>{{q.email}}</td>
+                                          <td>{{q.phone}}</td>
+                                          <td>{{q.postal_code}}</td>
+                                          <td>{{q.category}}</td>
+                                          <td>{{q.status}}</td>
+                                        
+                                          <td>
+                                            <a href="{% url 'quotation_deatils' q.pk %}" class="btn btn-primary btn-sm">Details</a> |
+                                            <a href="{% url 'quotation_assign' q.pk %}" class="btn btn-primary btn-sm">Assign</a> |
+                                            <a href="{% url 'quotation_assessment' q.pk %}" class="btn btn-warning btn-sm">CostAssessment</a>|
+                                            {% if q.quotationpricing_set.exists %}
+                                                <a href="{% url 'quotation-edit' q.pk %}" class="btn btn-warning btn-sm">QuotaionEdit</a>|
+                                                <a href="{% url 'view-quotation-pricing' q.pk %}" class="btn btn-warning btn-sm">ViewQuotaion</a>|
+                                            {% endif %}
+                                            {% if q.order_set.exists %}
+                                                <a href="#" class="btn btn-danger btn-sm">Order Placed</a>
+                                            {% else %}
+                                                <a href="{% url 'create_order' q.pk %}" class="btn btn-warning btn-sm">Order</a>
+                                                
+                                            {% endif %}
+                                          </td>
+                                          
+                                        </tr>
+                                        {% endfor %}
+                                 
+                                      </tbody>
+                                     
+                                </table>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

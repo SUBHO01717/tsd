@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section style="background-color: #EEF5FF;">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-lg-2 col-12 py-5" style="background-color: #0F1035;">
+                
+                <a href="{% url "dashboard" %}" ><h5 class="text-white mb-4">Dashboard</h5></a>
+                <hr>
+                <a href=""><i class="fa fa-user-alt me-3"></i> Update Profile</a>
+                <hr>
+                <a href="{% url 'quotation_list'%}" style="display: block; margin-bottom: 25px;">
+                    <i class="fas fa-list me-3"></i>All Quotations
+                </a>
+                
+                <a href="{% url 'order_list'%}" style="display: block; margin-bottom: 25px;">
+                    <i class="fas fa-list me-3"></i>All Orders
+                </a>
+                
+                <a href="{% url 'customer_list'  %}" style="display: block; margin-bottom: 25px;">
+                  <i class="fas fa-list me-3"></i>All Customer
+              </a>
+              
+              <a href="{% url 'service_man_list'  %}" style="display: block; margin-bottom: 25px;">
+                  <i class="fas fa-list me-3"></i>All Service Man
+              </a>
+                <hr>
+                <a href="{% url 'logout' %}" class = "btn btn-primary"><i class="fa fa-user-alt me-3"></i> LOGOUT</a>
+            </div>
+            <div class="col-lg-10 col-12 py-5">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-3" >
+                            <div class="row g-0">
+                                <div class="col-md-4 d-flex align-items-center justify-content-center bg-dark">
+                                    <img src="{{ service_man.userprofile.profile_image.url }}" class="rounded-circle" alt="Service Man Photo" style="height:300px; width:300px;">
+                                </div>
+                              <div class="col-md-8 d-flex align-items-center justify-content-center">
+                                <div class="card-body">
+                                    <table class="text-dark table ">
+                                        <tr>
+                                            <th>Service Man Name : </th>
+                                            <th>{{service_man.first_name}} {{service_man.last_name}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Service Man Expertise : </th>
+                                            <td>{{service_man.userprofile.expertise}} </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Service Man Email : </th>
+                                            <td>{{service_man.email}} </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Service Man Phone : </th>
+                                            <td>{{service_man.userprofile.phone}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Service Man Address : </th>
+                                            <td>{{service_man.userprofile.address}}, {{service_man.userprofile.city}},{{service_man.userprofile.postal_code}} </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Service Man Active : </th>
+                                            <td>{{service_man.userprofile.is_active}} </td>
+                                        </tr>
+                                        <tr class="py-5">
+                                            <th >Service Man Indentity </th>
+                                            <td>
+                                                <img src="{{ service_man.userprofile.photo_id.url }}" class="img-fluid rounded" alt="Service Man Photo" style="height:200px; width:auto;">
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
